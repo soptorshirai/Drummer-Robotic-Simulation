@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<robot name="wide_drum_kit">
+  <link name="drum_kit_base"/>
+  <!-- X forward, Y left, Z up. Each head frame is on its playable surface. -->
+  <joint name="hi_hat_mount" type="fixed">
+    <parent link="drum_kit_base"/>
+    <child link="hi_hat_head"/>
+    <origin xyz="0.55 0.6 0.8"/>
+  </joint>
+  <link name="hi_hat_head">
+    <visual>
+      <origin xyz="0 0 -0.0125"/>
+      <geometry><cylinder radius="0.15" length="0.025"/></geometry>
+      <material name="hi_hat_finish"><color rgba="0.80 0.63 0.24 1"/></material>
+    </visual>
+    <visual>
+      <origin xyz="0 0 -0.41250000000000003"/>
+      <geometry><cylinder radius="0.015" length="0.775"/></geometry>
+      <material name="stand_hi_hat"><color rgba="0.34 0.36 0.39 1"/></material>
+    </visual>
+  </link>
+  <joint name="snare_mount" type="fixed">
+    <parent link="drum_kit_base"/>
+    <child link="snare_head"/>
+    <origin xyz="0.52 -0.12 0.71"/>
+  </joint>
+  <link name="snare_head">
+    <visual>
+      <origin xyz="0 0 -0.06"/>
+      <geometry><cylinder radius="0.17" length="0.12"/></geometry>
+      <material name="snare_finish"><color rgba="0.72 0.22 0.16 1"/></material>
+    </visual>
+    <visual>
+      <origin xyz="0 0 -0.415"/>
+      <geometry><cylinder radius="0.015" length="0.59"/></geometry>
+      <material name="stand_snare"><color rgba="0.34 0.36 0.39 1"/></material>
+    </visual>
+  </link>
+  <joint name="ride_mount" type="fixed">
+    <parent link="drum_kit_base"/>
+    <child link="ride_head"/>
+    <origin xyz="0.57 -0.6 0.8"/>
+  </joint>
+  <link name="ride_head">
+    <visual>
+      <origin xyz="0 0 -0.0125"/>
+      <geometry><cylinder radius="0.2" length="0.025"/></geometry>
+      <material name="ride_finish"><color rgba="0.80 0.63 0.24 1"/></material>
+    </visual>
+    <visual>
+      <origin xyz="0 0 -0.41250000000000003"/>
+      <geometry><cylinder radius="0.015" length="0.775"/></geometry>
+      <material name="stand_ride"><color rgba="0.34 0.36 0.39 1"/></material>
+    </visual>
+  </link>
+</robot>
