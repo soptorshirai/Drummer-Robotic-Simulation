@@ -10,6 +10,8 @@ Set the fixed base frame `B` at the seated pelvis. Let `q_T` contain the availab
 
 Record each drumhead center, unit surface normal `n` pointing out of the head, usable radius, and target point `p_hit` in frame `B`. Measure the grip-to-tip transform with the stick in its actual playing orientation. A quick calibration check is whether a predicted tip location matches a measured tip location at a known arm pose.
 
+For the simulated 29-DOF G1, use `left_drumstick_tip` and `right_drumstick_tip` in [the URDF](g1_description/urdf/g1_29dof.urdf) as the IK and hit-detection endpoints. Each tip frame's +X axis points from the grip toward the striking end. The fixed hand-to-tip transform is already part of the model.
+
 ```text
 Top view, schematic
 

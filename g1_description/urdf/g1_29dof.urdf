@@ -1018,4 +1018,64 @@
       <material name="white"/>
     </visual>
   </link>
+
+  <!-- Stick axis is +X. The grip is 50 mm from the butt. -->
+  <joint name="left_drumstick_mount" type="fixed">
+    <parent link="left_rubber_hand"/>
+    <child link="left_drumstick"/>
+    <origin xyz="0.075 -0.010 0.015"/>
+  </joint>
+  <link name="left_drumstick">
+    <visual>
+      <origin xyz="0.100 0 0" rpy="0 1.57079632679 0"/>
+      <geometry>
+        <cylinder radius="0.007" length="0.300"/>
+      </geometry>
+      <material name="left_drumstick_wood">
+        <color rgba="0.76 0.54 0.31 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.100 0 0" rpy="0 1.57079632679 0"/>
+      <geometry>
+        <cylinder radius="0.007" length="0.300"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="left_drumstick_tip_joint" type="fixed">
+    <parent link="left_drumstick"/>
+    <child link="left_drumstick_tip"/>
+    <origin xyz="0.250 0 0"/>
+  </joint>
+  <link name="left_drumstick_tip"/>
+
+  <!-- Stick axis is +X. The grip is 50 mm from the butt. -->
+  <joint name="right_drumstick_mount" type="fixed">
+    <parent link="right_rubber_hand"/>
+    <child link="right_drumstick"/>
+    <origin xyz="0.075 0.010 0.015"/>
+  </joint>
+  <link name="right_drumstick">
+    <visual>
+      <origin xyz="0.100 0 0" rpy="0 1.57079632679 0"/>
+      <geometry>
+        <cylinder radius="0.007" length="0.300"/>
+      </geometry>
+      <material name="right_drumstick_wood">
+        <color rgba="0.76 0.54 0.31 1"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0.100 0 0" rpy="0 1.57079632679 0"/>
+      <geometry>
+        <cylinder radius="0.007" length="0.300"/>
+      </geometry>
+    </collision>
+  </link>
+  <joint name="right_drumstick_tip_joint" type="fixed">
+    <parent link="right_drumstick"/>
+    <child link="right_drumstick_tip"/>
+    <origin xyz="0.250 0 0"/>
+  </joint>
+  <link name="right_drumstick_tip"/>
 </robot>
