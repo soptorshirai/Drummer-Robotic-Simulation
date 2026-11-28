@@ -802,12 +802,104 @@
       <mass value="0.170"/>
       <inertia ixx="0.00010099485234748" ixy="0.00003618590790516" ixz="-0.00000074301518642" iyy="0.00028135871571621" iyz="0.00000330189743286" izz="0.00021894770413514"/>
     </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+    <!-- Fixed closed grip around the +X stick axis. -->
+    <visual name="closed_grip_palm">
+      <origin xyz="0.056 -0.01 -0.008" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://g1_description/meshes/left_rubber_hand.STL"/>
+        <box size="0.112 0.046 0.033"/>
       </geometry>
-      <material name="white"/>
+      <material name="dark"/>
+    </visual>
+    <visual name="index_knuckle">
+      <origin xyz="0.1 -0.033 0.01" rpy="-0.15 0 0"/>
+      <geometry>
+        <box size="0.013 0.014 0.034"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="index_bend">
+      <origin xyz="0.1 -0.023 0.027" rpy="-0.42 0 0"/>
+      <geometry>
+        <box size="0.013 0.025 0.013"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="index_tip">
+      <origin xyz="0.1 -0.003 0.025" rpy="-0.48 0 0"/>
+      <geometry>
+        <box size="0.013 0.017 0.012"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="middle_knuckle">
+      <origin xyz="0.084 -0.033 0.01" rpy="-0.15 0 0"/>
+      <geometry>
+        <box size="0.013 0.014 0.034"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="middle_bend">
+      <origin xyz="0.084 -0.023 0.027" rpy="-0.42 0 0"/>
+      <geometry>
+        <box size="0.013 0.025 0.013"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="middle_tip">
+      <origin xyz="0.084 -0.003 0.025" rpy="-0.48 0 0"/>
+      <geometry>
+        <box size="0.013 0.017 0.012"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="ring_knuckle">
+      <origin xyz="0.068 -0.033 0.01" rpy="-0.15 0 0"/>
+      <geometry>
+        <box size="0.013 0.014 0.034"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="ring_bend">
+      <origin xyz="0.068 -0.023 0.027" rpy="-0.42 0 0"/>
+      <geometry>
+        <box size="0.013 0.025 0.013"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="ring_tip">
+      <origin xyz="0.068 -0.003 0.025" rpy="-0.48 0 0"/>
+      <geometry>
+        <box size="0.013 0.017 0.012"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="little_knuckle">
+      <origin xyz="0.052 -0.033 0.01" rpy="-0.15 0 0"/>
+      <geometry>
+        <box size="0.013 0.014 0.034"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="little_bend">
+      <origin xyz="0.052 -0.023 0.027" rpy="-0.42 0 0"/>
+      <geometry>
+        <box size="0.013 0.025 0.013"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="little_tip">
+      <origin xyz="0.052 -0.003 0.025" rpy="-0.48 0 0"/>
+      <geometry>
+        <box size="0.013 0.017 0.012"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="closed_grip_thumb">
+      <origin xyz="0.063 0.012 0.012" rpy="0.3 0 -0.3"/>
+      <geometry>
+        <box size="0.046 0.016 0.019"/>
+      </geometry>
+      <material name="dark"/>
     </visual>
   </link>
   <link name="right_shoulder_pitch_link">
@@ -1010,12 +1102,104 @@
       <mass value="0.170"/>
       <inertia ixx="0.00010099485234748" ixy="-0.00003618590790516" ixz="-0.00000074301518642" iyy="0.00028135871571621" iyz="-0.00000330189743286" izz="0.00021894770413514"/>
     </inertial>
-    <visual>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+    <!-- Fixed closed grip around the +X stick axis. -->
+    <visual name="closed_grip_palm">
+      <origin xyz="0.056 0.01 -0.008" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://g1_description/meshes/right_rubber_hand.STL"/>
+        <box size="0.112 0.046 0.033"/>
       </geometry>
-      <material name="white"/>
+      <material name="dark"/>
+    </visual>
+    <visual name="index_knuckle">
+      <origin xyz="0.1 0.033 0.01" rpy="0.15 0 0"/>
+      <geometry>
+        <box size="0.013 0.014 0.034"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="index_bend">
+      <origin xyz="0.1 0.023 0.027" rpy="0.42 0 0"/>
+      <geometry>
+        <box size="0.013 0.025 0.013"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="index_tip">
+      <origin xyz="0.1 0.003 0.025" rpy="0.48 0 0"/>
+      <geometry>
+        <box size="0.013 0.017 0.012"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="middle_knuckle">
+      <origin xyz="0.084 0.033 0.01" rpy="0.15 0 0"/>
+      <geometry>
+        <box size="0.013 0.014 0.034"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="middle_bend">
+      <origin xyz="0.084 0.023 0.027" rpy="0.42 0 0"/>
+      <geometry>
+        <box size="0.013 0.025 0.013"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="middle_tip">
+      <origin xyz="0.084 0.003 0.025" rpy="0.48 0 0"/>
+      <geometry>
+        <box size="0.013 0.017 0.012"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="ring_knuckle">
+      <origin xyz="0.068 0.033 0.01" rpy="0.15 0 0"/>
+      <geometry>
+        <box size="0.013 0.014 0.034"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="ring_bend">
+      <origin xyz="0.068 0.023 0.027" rpy="0.42 0 0"/>
+      <geometry>
+        <box size="0.013 0.025 0.013"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="ring_tip">
+      <origin xyz="0.068 0.003 0.025" rpy="0.48 0 0"/>
+      <geometry>
+        <box size="0.013 0.017 0.012"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="little_knuckle">
+      <origin xyz="0.052 0.033 0.01" rpy="0.15 0 0"/>
+      <geometry>
+        <box size="0.013 0.014 0.034"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="little_bend">
+      <origin xyz="0.052 0.023 0.027" rpy="0.42 0 0"/>
+      <geometry>
+        <box size="0.013 0.025 0.013"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="little_tip">
+      <origin xyz="0.052 0.003 0.025" rpy="0.48 0 0"/>
+      <geometry>
+        <box size="0.013 0.017 0.012"/>
+      </geometry>
+      <material name="dark"/>
+    </visual>
+    <visual name="closed_grip_thumb">
+      <origin xyz="0.063 -0.012 0.012" rpy="-0.3 0 0.3"/>
+      <geometry>
+        <box size="0.046 0.016 0.019"/>
+      </geometry>
+      <material name="dark"/>
     </visual>
   </link>
 

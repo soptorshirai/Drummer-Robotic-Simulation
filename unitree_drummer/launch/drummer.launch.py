@@ -1,5 +1,6 @@
 """Bring up both descriptions, the trajectory node, and RViz."""
 
+import math
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
@@ -10,6 +11,35 @@ from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
+
+
+def scaled_g1_description(path, scale):
+    """Scale the G1's geometry and joint offsets for RViz and IK."""
+    if not math.isfinite(scale) or scale <= 0:
+        raise ValueError('g1_scale must be a finite positive number')
+    if scale == 1.0:
+        return path.read_text(encoding='utf-8')
+
+    robot = ET.parse(path).getroot()
+    for query in ('joint/origin', 'link/visual/origin', 'link/collision/origin'):
+        for origin in robot.findall(query):
+            if 'xyz' in origin.attrib:
+                origin.set('xyz', scale_dimensions(origin.attrib['xyz'], scale))
+
+    for mesh in robot.findall('.//geometry/mesh'):
+        mesh.set('scale', scale_dimensions(mesh.get('scale', '1 1 1'), scale))
+    for tag, attributes in (
+        ('box', ('size',)), ('sphere', ('radius',)), ('cylinder', ('radius', 'length')),
+    ):
+        for geometry in robot.findall(f'.//geometry/{tag}'):
+            for attribute in attributes:
+                geometry.set(attribute, scale_dimensions(geometry.attrib[attribute], scale))
+
+    return ET.tostring(robot, encoding='unicode')
+
+
+def scale_dimensions(dimensions, scale):
+    return ' '.join(format(float(value) * scale, '.12g') for value in dimensions.split())
 
 
 def kit_robot_description(path):
@@ -25,7 +55,8 @@ def simulation_nodes(context):
     g1_package = Path(get_package_share_directory('g1_description'))
     g1_urdf = g1_package / 'urdf' / 'g1_29dof.urdf'
     kit_urdf = Path(LaunchConfiguration('kit_urdf').perform(context))
-    g1_description = ParameterValue(g1_urdf.read_text(encoding='utf-8'), value_type=str)
+    g1_scale = float(LaunchConfiguration('g1_scale').perform(context))
+    g1_description = ParameterValue(scaled_g1_description(g1_urdf, g1_scale), value_type=str)
     kit_description = ParameterValue(kit_robot_description(kit_urdf), value_type=str)
 
     return [
@@ -64,6 +95,9 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
             'kit_urdf', default_value=str(Path.cwd() / 'drum_kit' / 'drum_kit.urdf'),
+        ),
+        DeclareLaunchArgument(
+            'g1_scale', default_value='1.10', description='Uniform scale of the simulated G1',
         ),
         DeclareLaunchArgument('kit_z', default_value='-0.65'),
         DeclareLaunchArgument('chart', default_value=str(package / 'config' / 'test_groove.json')),
