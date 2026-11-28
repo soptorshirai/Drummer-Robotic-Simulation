@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<robot name="downloaded_drum_kit">
+  <link name="drum_kit_base">
+    <visual>
+      <!-- Convert Y-up to Z-up, with the stool centered below the pelvis. -->
+      <origin xyz="0.468 0.0335 0" rpy="1.57079632679 0 1.57079632679"/>
+      <geometry>
+        <mesh filename="file://./drum-kit.stl"/>
+      </geometry>
+      <material name="drum_kit_finish">
+        <color rgba="0.42 0.65 0.61 1"/>
+      </material>
+    </visual>
+  </link>
+  <!-- Initial head centers estimated from the mesh. Check alignment in RViz. -->
+  <link name="hi_hat_head"/>
+  <joint name="hi_hat_mount" type="fixed">
+    <parent link="drum_kit_base"/>
+    <child link="hi_hat_head"/>
+    <origin xyz="0.5605 0.740 0.896"/>
+  </joint>
+  <link name="snare_head"/>
+  <joint name="snare_mount" type="fixed">
+    <parent link="drum_kit_base"/>
+    <child link="snare_head"/>
+    <origin xyz="0.4455 0.345 0.650"/>
+  </joint>
+  <link name="ride_head"/>
+  <joint name="ride_mount" type="fixed">
+    <parent link="drum_kit_base"/>
+    <child link="ride_head"/>
+    <origin xyz="0.904 -0.6715 1.070"/>
+  </joint>
+</robot>

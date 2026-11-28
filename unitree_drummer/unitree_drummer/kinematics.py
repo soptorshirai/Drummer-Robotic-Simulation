@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass
 
+from .KinematicChain import KinematicChain
+
 BASE_FRAME = 'pelvis'
 TIP_FRAMES = ('left_drumstick_tip', 'right_drumstick_tip')
 
@@ -17,7 +19,19 @@ class DrummerKinematics:
     def __init__(self, robot_description: str, active_joints: tuple[str, ...]):
         self.robot_description = robot_description
         self.active_joints = active_joints
-        # TODO: Build both pelvis-to-tip chains with shared waist coordinates.
+        self.joint_indices = {
+            name: index for index, name in enumerate(self.active_joints)
+        }
+        self.left_chain = KinematicChain(
+            None, BASE_FRAME, TIP_FRAMES[0],
+            robot_description=self.robot_description, joint_indices=self.joint_indices,
+        )
+        self.right_chain = KinematicChain(
+            None, BASE_FRAME, TIP_FRAMES[1],
+            robot_description=self.robot_description, joint_indices=self.joint_indices,
+        )
+        self.left_joints = [step.name for step in self.left_chain.chain]
+        self.right_joints = [step.name for step in self.right_chain.chain]
 
     def update(
         self, time_s: float, hits: tuple[Hit, ...], previous: dict[str, float],

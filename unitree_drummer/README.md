@@ -4,7 +4,7 @@ Python starter for Ubuntu 24.04, ROS 2 Jazzy, and RViz2. Like the HW7 node, it c
 
 ## Build and run
 
-Run from the project checkout containing `unitree_drummer`, `g1_description`, and `wide_drum_kit.urdf`:
+Run from the project checkout containing `unitree_drummer`, `g1_description`, and `drum_kit/`:
 
 ```bash
 source /opt/ros/jazzy/setup.bash
@@ -13,9 +13,11 @@ source install/setup.bash
 ros2 launch unitree_drummer drummer.launch.py
 ```
 
-In RViz, set the fixed frame to `pelvis`. Add two **RobotModel** displays with **Description Source** set to **Topic**. Use `/robot_description` for the G1 and `/drum_kit/robot_description` for the kit. The launch file starts both publishers. Stop older copies of those publishers or close your previous demo launch before starting this one.
+The launch file opens RViz with the project's [viewurdfplus.rviz](../rviz/viewurdfplus.rviz). It uses `pelvis` as the fixed frame, shows the G1 and drum kit, and displays TF axes for the pelvis, stick tips, and drumheads. Stop older copies of the description publishers or close your previous demo launch before starting this one.
 
-From another directory, pass the full path as `kit_urdf:=/path/to/wide_drum_kit.urdf`. Use `kit_z:=...` to change the kit's vertical offset relative to the pelvis and `rviz:=false` to run without the GUI. Pass a custom chart with `chart:=/path/to/song.json`. The example chart is [test_groove.json](config/test_groove.json).
+From another directory, pass absolute paths with `kit_urdf:=/path/to/drum_kit/drum_kit.urdf` and `rviz_config:=/path/to/rviz/viewurdfplus.rviz`. Use `kit_z:=...` to change the kit's vertical offset relative to the pelvis and `rviz:=false` to run without the GUI. Pass a custom chart with `chart:=/path/to/song.json`. The example chart is [test_groove.json](config/test_groove.json).
+
+The default kit uses an STL converted from the downloaded OBJ in [drum_kit](../drum_kit) so RViz can display the detailed geometry. The URDF supplies a single display color. The original OBJ, MTL, and textures are kept together for use in other viewers. The drumhead frames are initial estimates from the mesh and can be adjusted in [drum_kit.urdf](../drum_kit/drum_kit.urdf) after checking them in RViz.
 
 ## Where to code
 

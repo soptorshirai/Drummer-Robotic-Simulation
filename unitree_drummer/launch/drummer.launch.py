@@ -1,6 +1,7 @@
 """Bring up both descriptions, the trajectory node, and RViz."""
 
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -11,12 +12,21 @@ from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
 
+def kit_robot_description(path):
+    robot = ET.parse(path).getroot()
+    for mesh in robot.findall('.//mesh'):
+        filename = mesh.get('filename', '')
+        if filename.startswith('file://./'):
+            mesh.set('filename', (path.parent / filename[9:]).resolve().as_uri())
+    return ET.tostring(robot, encoding='unicode')
+
+
 def simulation_nodes(context):
     g1_package = Path(get_package_share_directory('g1_description'))
     g1_urdf = g1_package / 'urdf' / 'g1_29dof.urdf'
     kit_urdf = Path(LaunchConfiguration('kit_urdf').perform(context))
     g1_description = ParameterValue(g1_urdf.read_text(encoding='utf-8'), value_type=str)
-    kit_description = ParameterValue(kit_urdf.read_text(encoding='utf-8'), value_type=str)
+    kit_description = ParameterValue(kit_robot_description(kit_urdf), value_type=str)
 
     return [
         Node(
@@ -43,7 +53,7 @@ def simulation_nodes(context):
         ),
         Node(
             package='rviz2', executable='rviz2',
-            arguments=['-f', 'pelvis'],
+            arguments=['-d', LaunchConfiguration('rviz_config')],
             condition=IfCondition(LaunchConfiguration('rviz')),
         ),
     ]
@@ -52,9 +62,14 @@ def simulation_nodes(context):
 def generate_launch_description():
     package = Path(get_package_share_directory('unitree_drummer'))
     return LaunchDescription([
-        DeclareLaunchArgument('kit_urdf', default_value=str(Path.cwd() / 'wide_drum_kit.urdf')),
-        DeclareLaunchArgument('kit_z', default_value='-0.70'),
+        DeclareLaunchArgument(
+            'kit_urdf', default_value=str(Path.cwd() / 'drum_kit' / 'drum_kit.urdf'),
+        ),
+        DeclareLaunchArgument('kit_z', default_value='-0.65'),
         DeclareLaunchArgument('chart', default_value=str(package / 'config' / 'test_groove.json')),
         DeclareLaunchArgument('rviz', default_value='true'),
+        DeclareLaunchArgument(
+            'rviz_config', default_value=str(Path.cwd() / 'rviz' / 'viewurdfplus.rviz'),
+        ),
         OpaqueFunction(function=simulation_nodes),
     ])

@@ -5,6 +5,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 
 from ament_index_python.packages import get_package_share_directory
+import numpy as np
 import rclpy
 from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
@@ -27,24 +28,34 @@ class TrajectoryNode(Node):
             (Hit(**event) for event in chart['hits']), key=lambda hit: hit.time_s,
         ))
 
+        # Define joint names in the same order as the published joint angles.
         robot = ET.fromstring(description)
-        self.positions = {
-            joint.attrib['name']: 0.0 for joint in robot.findall('joint')
+        self.jointnames = [
+            joint.attrib['name'] for joint in robot.findall('joint')
             if joint.attrib['type'] != 'fixed'
-        }
-        for side in ('left', 'right'):
-            self.positions[f'{side}_hip_pitch_joint'] = -1.57
-            self.positions[f'{side}_knee_joint'] = 1.57
-        self.active_joints = tuple(
-            name for name in self.positions
+        ]
+
+        # Set up the kinematics for the waist and arms.
+        self.active_indices = tuple(
+            i for i, name in enumerate(self.jointnames)
             if name.startswith('waist_')
             or any(part in name for part in ('_shoulder_', '_elbow_', '_wrist_'))
         )
+        self.active_joints = tuple(self.jointnames[i] for i in self.active_indices)
         self.kinematics = DrummerKinematics(description, self.active_joints)
 
-        self.publisher = self.create_publisher(JointState, 'joint_states', 10)
+        # Define the initial seated pose and copy it into the joint command.
+        self.q0 = np.zeros(len(self.jointnames))
+        for side in ('left', 'right'):
+            self.q0[self.jointnames.index(f'{side}_hip_pitch_joint')] = -1.57
+            self.q0[self.jointnames.index(f'{side}_knee_joint')] = 1.57
+        self.qc = self.q0.copy()
+
+        # Set up the joint-state publisher and the 100 Hz timer.
+        self.pubjoint = self.create_publisher(JointState, 'joint_states', 10)
+        self.dt = 0.01
         self.start_time = None
-        self.timer = self.create_timer(0.01, self.update)
+        self.timer = self.create_timer(self.dt, self.update)
         self.get_logger().info(
             f'{chart["title"]}: {len(self.hits)} target hits. '
             'The starter kinematics holds the seated pose.'
@@ -52,20 +63,22 @@ class TrajectoryNode(Node):
 
     def update(self):
         now = self.get_clock().now()
-        if self.start_time is None and self.publisher.get_subscription_count():
+        if self.start_time is None and self.pubjoint.get_subscription_count():
             self.start_time = now
         if self.start_time is not None:
             time_s = (now - self.start_time).nanoseconds / 1e9 - 2.0
-            previous = {name: self.positions[name] for name in self.active_joints}
+            previous = {
+                self.jointnames[i]: float(self.qc[i]) for i in self.active_indices
+            }
             command = self.kinematics.update(time_s, self.hits, previous)
-            for name in self.active_joints:
-                self.positions[name] = float(command[name])
+            for i in self.active_indices:
+                self.qc[i] = command[self.jointnames[i]]
 
         message = JointState()
         message.header.stamp = now.to_msg()
-        message.name = list(self.positions)
-        message.position = list(self.positions.values())
-        self.publisher.publish(message)
+        message.name = self.jointnames
+        message.position = self.qc.tolist()
+        self.pubjoint.publish(message)
 
 
 def main(args=None):
